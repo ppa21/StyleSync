@@ -1,0 +1,2 @@
+# StyleSync
+Salon Booking System
