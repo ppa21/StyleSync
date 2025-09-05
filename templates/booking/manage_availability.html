@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4">Manage Your Weekly Availability</h1>
+<p>Set your working hours for each day. Uncheck "Delete" for days you are unavailable.</p>
+<form method="POST">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    <div class="card shadow-sm"><div class="card-body">
+        {% for form in formset %}
+            <div class="row align-items-center mb-3 border-bottom pb-3">
+                <div class="col-md-3">
+                    <select name="{{ form.prefix }}-day_of_week" id="id_{{ form.prefix }}-day_of_week" class="form-select">
+                        {% for value, text in form.fields.day_of_week.choices %}
+                        <option value="{{ value }}" {% if form.instance.day_of_week == value or not form.instance.pk and forloop.parentloop.counter0 == value %}selected{% endif %}>{{ text }}</option>
+                        {% endfor %}
+                    </select>
+                    {{ form.id }}
+                </div>
+                <div class="col-md-3">{{ form.start_time.label_tag }} {{ form.start_time }}</div>
+                <div class="col-md-3">{{ form.end_time.label_tag }} {{ form.end_time }}</div>
+                <div class="col-md-2">{% if form.instance.pk %}{{ form.DELETE.label_tag }} {{ form.DELETE }}{% endif %}</div>
+                {% for error in form.errors.values %}<div class="text-danger">{{ error }}</div>{% endfor %}
+            </div>
+        {% endfor %}
+    </div></div>
+    <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+</form>
+{% endblock %}```
+
+**File Path:** `templates/booking/email/confirmation_subject.txt`

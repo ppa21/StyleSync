@@ -1,0 +1,9 @@
+Hi {{ booking.customer.first_name }},
+
+This is a confirmation for your upcoming appointment.
+
+Service: {{ booking.service.name }}
+Stylist: {{ booking.staff }}
+Date & Time: {{ booking.start_time|date:"F j, Y, P" }}
+
+Thank you for booking with StyleSync!

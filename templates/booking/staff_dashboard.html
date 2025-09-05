@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div><h1 class="mb-0">Your Schedule</h1><h4 class="text-muted">Welcome, {{ staff_member }}</h4></div>
+    <a href="{% url 'booking:manage_availability' %}" class="btn btn-secondary">Manage Availability</a>
+</div>
+{% for date, bookings in bookings_by_date.items %}
+<div class="card shadow-sm mb-4"><div class="card-header"><h5 class="mb-0">{{ date|date:"l, F j, Y" }}</h5></div>
+<div class="card-body"><ul class="list-group list-group-flush">
+    {% for booking in bookings %}<li class="list-group-item d-flex justify-content-between align-items-center">
+        <div><strong>{{ booking.start_time|time:"h:i A" }} - {{ booking.end_time|time:"h:i A" }}</strong><br>
+        <span class="text-muted">{{ booking.service.name }} with {{ booking.customer.get_full_name|default:booking.customer.username }}</span></div>
+        <span class="badge bg-primary rounded-pill">{{ booking.service.duration_minutes }} min</span>
+    </li>{% endfor %}
+</ul></div></div>
+{% empty %}
+<div class="alert alert-info">You have no upcoming confirmed bookings.</div>
+{% endfor %}
+{% endblock %}

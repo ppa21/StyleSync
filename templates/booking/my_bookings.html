@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4">My Bookings</h1>
+<div class="card shadow-sm mb-4"><div class="card-header"><h3>Upcoming Bookings</h3></div>
+<div class="card-body">{% if upcoming_bookings %}<div class="table-responsive"><table class="table table-hover">
+    <thead><tr><th>Service</th><th>Stylist</th><th>Date</th><th>Time</th><th>Action</th></tr></thead>
+    <tbody>{% for booking in upcoming_bookings %}<tr>
+        <td>{{ booking.service.name }}</td><td>{{ booking.staff }}</td>
+        <td>{{ booking.start_time|date:"D, M j, Y" }}</td><td>{{ booking.start_time|time:"h:i A" }}</td>
+        <td><form method="POST" action="{% url 'booking:cancel_booking' booking.id %}" onsubmit="return confirm('Are you sure?');">
+            {% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Cancel</button></form></td>
+    </tr>{% endfor %}</tbody>
+</table></div>{% else %}<p>You have no upcoming bookings.</p>{% endif %}</div></div>
+<div class="card shadow-sm"><div class="card-header"><h3>Past Bookings</h3></div>
+<div class="card-body">{% if past_bookings %}<div class="table-responsive"><table class="table">
+    <thead><tr><th>Service</th><th>Stylist</th><th>Date</th><th>Status</th></tr></thead>
+    <tbody>{% for booking in past_bookings %}<tr>
+        <td>{{ booking.service.name }}</td><td>{{ booking.staff }}</td>
+        <td>{{ booking.start_time|date:"D, M j, Y" }}</td>
+        <td><span class="badge bg-secondary text-capitalize">{{ booking.status }}</span></td>
+    </tr>{% endfor %}</tbody>
+</table></div>{% else %}<p>You have no past bookings.</p>{% endif %}</div></div>
+{% endblock %}

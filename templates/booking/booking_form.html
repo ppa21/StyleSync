@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4">Book: {{ service.name }}</h1>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4"><div class="card-body">
+            <h5 class="card-title">1. Select Stylist & Date</h5>
+            <form method="GET" action="{% url 'booking:book_service' service.id %}">
+                <div class="mb-3">
+                    <label for="staff" class="form-label">Stylist</label>
+                    <select name="staff" id="staff" class="form-select" required>
+                        <option value="">--- Select a Stylist ---</option>
+                        {% for staff in staff_members %}<option value="{{ staff.id }}" {% if staff.id == selected_staff_id %}selected{% endif %}>{{ staff }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" name="date" id="date" class="form-control" value="{{ selected_date }}" required>
+                </div>
+                <button type="submit" class="btn btn-secondary">Check Availability</button>
+            </form>
+        </div></div>
+    </div>
+    {% if selected_date and selected_staff_id %}
+    <div class="col-md-6"><div class="card shadow-sm"><div class="card-body">
+        <h5 class="card-title">2. Select a Time</h5>
+        {% if available_slots %}
+            <form method="POST" action="{% url 'booking:book_service' service.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="staff" value="{{ selected_staff_id }}">
+                <input type="hidden" name="date" value="{{ selected_date }}">
+                <p>Available slots for <strong>{{ selected_date }}</strong>:</p>
+                <div class="list-group">
+                    {% for slot in available_slots %}<button type="submit" name="time" value="{{ slot|time:'H:i:s' }}" class="list-group-item list-group-item-action">{{ slot|time:'h:i A' }}</button>{% endfor %}
+                </div>
+            </form>
+        {% else %}
+            <div class="alert alert-warning">No available slots for the selected stylist and date.</div>
+        {% endif %}
+    </div></div></div>
+    {% endif %}
+</div>
+{% endblock %}

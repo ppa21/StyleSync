@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-md-6">
+    <div class="card shadow-sm"><div class="card-header"><h2 class="text-center">Create an Account</h2></div>
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% for field in form %}<div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" id="{{ field.id_for_label }}" class="form-control {% if field.errors %}is-invalid{% endif %}">
+                {% if field.help_text %}<div class="form-text">{{ field.help_text|safe }}</div>{% endif %}
+                {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+            </div>{% endfor %}
+            <div class="d-grid"><button type="submit" class="btn btn-primary mt-3">Register</button></div>
+        </form>
+    </div>
+    <div class="card-footer text-center"><small>Already have an account? <a href="{% url 'booking:login' %}">Log In</a></small></div>
+</div></div></div>
+{% endblock %}
