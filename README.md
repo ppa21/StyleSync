@@ -1,2 +1,2 @@
 # StyleSync
-Salon Booking System
+Hair Stylist Booking System
