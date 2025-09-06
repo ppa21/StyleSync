@@ -1,0 +1,10 @@
+Hi {{ booking.customer.first_name }},
+
+This is a friendly reminder for your appointment tomorrow.
+
+Service: {{ booking.service.name }}
+Stylist: {{ booking.staff }}
+Date & Time: {{ booking.start_time|date:"F j, Y, P" }}
+
+We look forward to seeing you!
+- The StyleSync Team
